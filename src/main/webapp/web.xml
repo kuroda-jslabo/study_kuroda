@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+             http://xmlns.jcp.org/xml/ns/javaee
+             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+  <display-name>Sample MVC</display-name>
+
+  <!-- HTMLのエスケープをデフォルトで実施  -->
+  <context-param>
+    <param-name>defaultHtmlEscape</param-name>
+    <param-value>true</param-value>
+  </context-param>
+
+  <!-- どのBean定義ファイルをもとにDIコンテナを作成するのか指定  -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      classpath:/META-INF/spring/beans-biz.xml
+    </param-value>
+  </context-param>
+  <!--
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>
+      org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+    </param-value>
+  </context-param>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>sample.customer.config.BizConfig</param-value>
+  </context-param>
+  -->
+
+  <!-- DIコンテナをWebコンテナ上に作成  -->
+  <listener>
+    <listener-class>
+      org.springframework.web.context.ContextLoaderListener
+    </listener-class>
+  </listener>
+
+  <!-- 適切な文字コードを自動的に指定  -->
+  <filter>
+    <filter-name>characterEncodingFilter</filter-name>
+    <filter-class>
+      org.springframework.web.filter.CharacterEncodingFilter
+    </filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>characterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- DispatcherServletを定義  -->
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>
+      org.springframework.web.servlet.DispatcherServlet
+    </servlet-class>
+  <!-- DispatcherServletで作成するDIコンテナのBean定義ファイルを指定  -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+        classpath:/META-INF/spring/beans-webmvc.xml
+      </param-value>
+    </init-param>
+<!--
+    <init-param>
+      <param-name>contextClass</param-name>
+      <param-value>
+        org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+      </param-value>
+    </init-param>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>
+        sample.customer.config.WebConfig
+      </param-value>
+    </init-param>
+-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <!-- DispatcherServletに対するパスを指定  -->
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+</web-app>
